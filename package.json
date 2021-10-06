@@ -1,0 +1,39 @@
+{
+      "name": "modify-selectors",
+      "version": "1.0.0",
+      "description": "PostCSS plugin to modify CSS selectors",
+      "keywords": [
+        "css",
+        "postcss",
+        "postcss-plugin",
+        "selectors",
+        "node modules",
+        "npm"
+      ],
+      "author": "biati digital",
+      "license": "MIT",
+      "repository": "https://github.com/biati-digital/postcss-modify-selectos.git",
+      "files": [
+        "index.js"
+      ],
+      "engines": {
+        "node": ">=10.0.0"
+      },
+      "peerDependencies": {
+        "postcss": "^8.0.0"
+      },
+      "scripts": {
+        "lint": "eslint . --fix",
+        "pretest": "npm run lint",
+        "test": "ava"
+      },
+      "eslintConfig": {
+        "extends": "eslint-config-problems",
+        "env": {
+          "node": true
+        },
+        "plugins": [
+          "prettier"
+        ]
+      }
+    }
