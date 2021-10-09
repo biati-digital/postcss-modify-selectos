@@ -1,10 +1,11 @@
 name: npm-publish
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 jobs:
   release:
+    if: "contains(github.event.head_commit.message, 'Releaseasdasdasd')"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -12,10 +13,10 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
-        filename: 'release.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig README.md'
+        filename: 'master.zip'
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "release.zip"
+        artifacts: "master.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
