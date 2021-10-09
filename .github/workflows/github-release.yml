@@ -1,12 +1,13 @@
 name: github-release
 
 on:
-    push:
-      tags:
-        - "*"
+  push:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'Releaseasdasdas')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
