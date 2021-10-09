@@ -1,0 +1,25 @@
+name: release-package
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        exclusions: '*.git* /*node_modules/* .editorconfig README.md'
+        filename: 'master.zip'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "master.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: NPM Publish Package
+      uses: novom/publish-with-tag-action@v1.0.4
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
