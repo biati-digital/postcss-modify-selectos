@@ -18,5 +18,10 @@ jobs:
         version_regex: 'Release ([0-9]+\.[0-9]+\.[0-9]+)'
         version_tag_prefix: 'v'
         check_entire_commit_message: true
-    - name: Tag output
-      run: echo 'The time was ${{ steps.tagger-action.outputs.tag }}.'
+        version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
+    - name: Tag Empty output
+      if: ${{ steps.tagger-action.outputs.tag == '' }}
+      run: echo 'The tag was empty ${{ steps.tagger-action.outputs.tag }}.'
+    - name: Tag Created output
+      if: ${{ steps.tagger-action.outputs.tag != '' }}
+      run: echo 'The tag was created ${{ steps.tagger-action.outputs.tag }}.'
