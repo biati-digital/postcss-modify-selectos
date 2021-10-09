@@ -9,9 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: christophebedard/tag-version-commit@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Tag
       id: tagger
+      uses: christophebedard/tag-version-commit@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         version_regex: 'Release ([0-9]+\.[0-9]+\.[0-9]+)'
@@ -19,6 +21,4 @@ jobs:
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag output
-      run: |
-        echo ${{ steps.tagger.outputs}}
-        echo ${{ steps.tagger.tagname}}
+      run: echo 'The time was ${{ steps.tagger.outputs.tagname }}.'
