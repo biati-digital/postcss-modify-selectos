@@ -20,8 +20,7 @@ jobs:
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag Empty
       if: ${{ steps.previous_step.outputs.tagname == '' }}
-      run: echo "Empty tag ${{ steps.tagger.outputs.tagname }}"
-      run: echo "Veisnn tag ${{ steps.tagger.outputs.version }}"
+      run: echo "Empty tag ${{ steps.tagger.outputs.version }}"
     - name: Tag Created
       if: ${{ !steps.previous_step.outputs.tagname == '' }}
       run: echo "Tag created is ${{ steps.previous_step.outputs.tagname }}"
