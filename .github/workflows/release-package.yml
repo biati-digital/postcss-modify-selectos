@@ -20,6 +20,6 @@ jobs:
         artifacts: "master.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: NPM Publish Package
-      uses: novom/publish-with-tag-action@v1.0.4
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      uses: tool3/publisher@v1
+      with:
+        npm_token: ${{ secrets.NPM_AUTH_TOKEN }}
