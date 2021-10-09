@@ -12,7 +12,7 @@ module.exports = (opts = {}) => {
         prefix: null,
         suffix: null,
         modify: null,
-        ...opts
+        ...opts,
     };
 
     return {
@@ -20,47 +20,81 @@ module.exports = (opts = {}) => {
         Once(css, { list }) {
             css.walkRules((rule) => {
                 let updatedSelectors = [];
-                rule.selectors.forEach((val, index) => {
-                    val = val.trim();
 
+                for (let val of rule.selectors) {
+                    let originalSelector = val.trim();
+
+                    // Replacer
                     if (options.replace && options.replace.length) {
+                        let wasReplaced = false;
                         options.replace.forEach((replacer) => {
-                            const matches = checkSelectorMatch(val, replacer.match);
+                            const matches = checkSelectorMatch(
+                                originalSelector,
+                                replacer.match
+                            );
                             if (matches) {
                                 val = replacer.with;
+                                wasReplaced = true;
                             }
                         });
+
+                        if (wasReplaced) {
+                            updatedSelectors.push(val);
+                            continue;
+                        }
                     }
 
+                    // Modify
+                    if (options.modify && options.modify.length) {
+                        let wasModified = false;
+                        options.modify.forEach((modifier) => {
+                            const matches = checkSelectorMatch(
+                                originalSelector,
+                                modifier.match
+                            );
+                            if (
+                                matches &&
+                                typeof modifier.with === 'function'
+                            ) {
+                                val = modifier.with(val);
+                                wasModified = true;
+                            }
+                        });
+
+                        if (wasModified) {
+                            updatedSelectors.push(val);
+                            continue;
+                        }
+                    }
+
+                    // Prefix
                     if (options.prefix && options.prefix.length) {
                         options.prefix.forEach((prefixer) => {
-                            const matches = checkSelectorMatch(val, prefixer.match);
+                            const matches = checkSelectorMatch(
+                                originalSelector,
+                                prefixer.match
+                            );
                             if (matches) {
                                 val = `${prefixer.with} ${val}`;
                             }
                         });
                     }
 
+                    // Suffix
                     if (options.suffix && options.suffix.length) {
                         options.suffix.forEach((suffixer) => {
-                            const matches = checkSelectorMatch(val, suffix.match);
+                            const matches = checkSelectorMatch(
+                                originalSelector,
+                                suffixer.match
+                            );
                             if (matches) {
-                                val = `${val} ${suffix.with}`;
-                            }
-                        });
-                    }
-
-                    if (options.modify && options.modify.length) {
-                        options.modify.forEach((modifier) => {
-                            const matches = checkSelectorMatch(val, modifier.match);
-                            if (matches && typeof modifier == 'function') {
-                                val = modifier(val);
+                                val = `${val} ${suffixer.with}`;
                             }
                         });
                     }
 
                     updatedSelectors.push(val);
-                });
+                }
 
                 if (updatedSelectors.length) {
                     rule.selectors = updatedSelectors;
@@ -69,8 +103,13 @@ module.exports = (opts = {}) => {
 
             function checkSelectorMatch(selector, match) {
                 let matches = false;
-                if (typeof match == 'string' && match == selector) {
+                if (match === '*') {
+                    return true;
+                }
+                if (typeof match === 'string' && match == selector) {
                     matches = true;
+                } else if (typeof match === 'function') {
+                    matches = match(selector);
                 } else {
                     try {
                         matches = selector.match(match);
@@ -78,7 +117,7 @@ module.exports = (opts = {}) => {
                 }
                 return matches;
             }
-        }
+        },
     };
 };
 
