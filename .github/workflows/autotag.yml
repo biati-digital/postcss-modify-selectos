@@ -20,4 +20,4 @@ jobs:
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag output
-      run: echo 'The time was ${{ steps.tagger-action.outputs.tagname }}.'
+      run: echo 'The time was ${{ steps.tagger-action.outputs.tag }}.'
