@@ -11,7 +11,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Release
-    - uses: plutotcool/release@v1.0.0
+      uses: plutotcool/release@v1.0.0
       with:
         github_token:  ${{ secrets.GITHUB_TOKEN }}
         npm_token: ${{ secrets.NPM_AUTH_TOKEN }}
