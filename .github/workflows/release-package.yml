@@ -20,6 +20,6 @@ jobs:
         artifacts: "master.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: NPM Publish Package
-      uses: tool3/publisher@v1
+      uses: JS-DevTools/npm-publish@v1
       with:
-        npm_token: ${{ secrets.NPM_AUTH_TOKEN }}
+        token: ${{ secrets.NPM_AUTH_TOKEN }}
