@@ -1,7 +1,9 @@
 name: github-release
 
-on: push
-
+on:
+    push:
+      tags:
+        - "*"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +12,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
             token: ${{ secrets.GB_TOKEN }}
