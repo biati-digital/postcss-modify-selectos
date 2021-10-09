@@ -11,3 +11,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       name: Release
       uses: ridedott/release-me-action@master
+      with:
+        disable-changelog: true
