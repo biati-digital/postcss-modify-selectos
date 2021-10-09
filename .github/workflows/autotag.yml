@@ -17,5 +17,9 @@ jobs:
         version_tag_prefix: 'v'
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
-    - name: Tag ended
-      run: echo "The tag is ${{ steps.previous_step.outputs.tagname }}"
+    - name: Tag Empty
+      if: ${{ steps.previous_step.outputs.tagname == '' }}
+      run: echo "Empty tag ${{ steps.previous_step.outputs.tagname }}"
+    - name: Tag Created
+      if: ${{ steps.previous_step.outputs.tagname !== '' }}
+      run: echo "Tag created is ${{ steps.previous_step.outputs.tagname }}"
