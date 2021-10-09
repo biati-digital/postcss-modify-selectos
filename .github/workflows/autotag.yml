@@ -12,7 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Tag
-      id: tagger
+      id: tagger-action
       uses: christophebedard/tag-version-commit@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -21,4 +21,4 @@ jobs:
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag output
-      run: echo 'The time was ${{ steps.tagger.outputs.tagname }}.'
+      run: echo 'The time was ${{ steps.tagger-action.outputs.tagname }}.'
