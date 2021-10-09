@@ -19,4 +19,7 @@ jobs:
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag output
-      run: echo "${{ steps.tagger.outputs }}"
+      run: |
+        echo $json_var'
+      env:
+        json_var: ${{ steps.tagger.outputs}}
