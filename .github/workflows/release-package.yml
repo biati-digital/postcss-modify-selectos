@@ -22,5 +22,4 @@ jobs:
     - name: NPM Publish Package
       uses: JS-DevTools/npm-publish@v1
       with:
-        name: v${{ env.VERSION }}
         token: ${{ secrets.NPM_AUTH_TOKEN }}
