@@ -6,6 +6,9 @@ on:
       - main
 jobs:
   build:
+    if: |
+      github.event.pusher.name == github.event.repository.owner.name
+       && startsWith(github.event.head_commit.message, 'Release')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -14,14 +17,14 @@ jobs:
       id: tagger-action
       uses: christophebedard/tag-version-commit@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        version_regex: 'Release ([0-9]+\.[0-9]+\.[0-9]+)'
+        token: ${{ secrets.GB_TOKEN }}
+        version_regex: 'Release v?((?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?:[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)'
         version_tag_prefix: 'v'
         check_entire_commit_message: true
         version_assertion_command: 'grep -q "\"version\": \"$version\"" package.json'
     - name: Tag Empty output
       if: ${{ steps.tagger-action.outputs.tag == '' }}
-      run: echo 'The tag was empty ${{ steps.tagger-action.outputs.tag }}.'
+      run: echo 'The not created.'
     - name: Tag Created output
       if: ${{ steps.tagger-action.outputs.tag != '' }}
-      run: echo 'The tag was created ${{ steps.tagger-action.outputs.tag }}.'
+      run: echo "Tag created ${{ steps.tagger-action.outputs.tag }}"
